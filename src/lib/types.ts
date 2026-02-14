@@ -15,11 +15,25 @@ export interface Equipment {
   category: string;
   serialNumber: string;
   quantity: number;
-  status: 'Available' | 'Assigned' | 'Maintenance';
+  minStockLevelLevel: number;
+  status: 'Available' | 'Assigned' | 'Maintenance' | 'Low Stock';
   assignedTo?: string;
   createdAt: string;
   usageDescription?: string;
   manufacturerSpecs?: string;
+}
+
+export type TransactionType = 'IN' | 'OUT' | 'ADJUSTMENT';
+
+export interface StockTransaction {
+  id: string;
+  equipmentId: string;
+  equipmentName: string;
+  type: TransactionType;
+  quantity: number;
+  reason: string;
+  performedBy: string;
+  timestamp: string;
 }
 
 export interface MaintenanceRecord {

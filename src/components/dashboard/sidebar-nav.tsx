@@ -12,7 +12,8 @@ import {
   History,
   TrendingUp,
   Wrench,
-  LogOut
+  LogOut,
+  ArrowLeftRight
 } from 'lucide-react';
 
 interface SidebarNavProps {
@@ -31,6 +32,7 @@ export function SidebarNav({ role }: SidebarNavProps) {
     if (role === 'admin') {
       return [
         ...common,
+        { href: `/dashboard/${role}/transactions`, label: 'Transaction Log', icon: ArrowLeftRight },
         { href: `/dashboard/${role}/users`, label: 'User Management', icon: Users },
         { href: `/dashboard/${role}/assignments`, label: 'Equipment Tracking', icon: ClipboardList },
         { href: `/dashboard/${role}/settings`, label: 'System Settings', icon: Settings },
@@ -40,6 +42,7 @@ export function SidebarNav({ role }: SidebarNavProps) {
     if (role === 'manager') {
       return [
         ...common,
+        { href: `/dashboard/${role}/transactions`, label: 'Stock Movements', icon: ArrowLeftRight },
         { href: `/dashboard/${role}/reports`, label: 'Usage Reports', icon: TrendingUp },
         { href: `/dashboard/${role}/maintenance`, label: 'Predictive Maintenance', icon: Wrench },
         { href: `/dashboard/${role}/assignments`, label: 'Assign Equipment', icon: ClipboardList },
