@@ -43,7 +43,7 @@ export function DashboardLayout({ children, role, title }: DashboardLayoutProps)
             <Shield className="w-6 h-6 text-primary" />
           </div>
           <div>
-            <h1 className="font-bold text-lg leading-none">DefenseLink</h1>
+            <h1 className="font-bold text-lg leading-none">Inventra</h1>
             <p className="text-[10px] text-muted-foreground uppercase tracking-widest mt-1 font-semibold">{role} Portal</p>
           </div>
         </div>

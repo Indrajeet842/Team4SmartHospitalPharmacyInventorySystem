@@ -1,4 +1,4 @@
-# **App Name**: DefenseLink
+# **App Name**: Inventra
 
 ## Core Features:
 

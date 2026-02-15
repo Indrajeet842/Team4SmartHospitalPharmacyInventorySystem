@@ -1,5 +1,5 @@
 "use client";
-
+import { cn } from "@/lib/utils";
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { StatCard } from '@/components/dashboard/stat-card';
 import { 
@@ -46,7 +46,7 @@ export default function AdminDashboard() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Intelligence Hub</h1>
-          <p className="text-muted-foreground mt-1">High-level visibility into defense inventory and logistical operations.</p>
+           <p className="text-muted-foreground mt-1">High-level visibility into defence inventory and logistical operations.</p>
         </div>
         <div className="flex gap-3">
           <Link href="/dashboard/admin/inventory">

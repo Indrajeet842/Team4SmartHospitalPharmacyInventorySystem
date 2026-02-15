@@ -3,7 +3,7 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
-  title: 'DefenseLink - Smart Equipment Inventory',
+  title: 'Smart Defence Equipment Inventory System',
   description: 'Secure equipment management and predictive maintenance for defense operations.',
 };
 

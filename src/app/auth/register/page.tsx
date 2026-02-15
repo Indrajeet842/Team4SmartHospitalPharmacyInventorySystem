@@ -64,7 +64,7 @@ export default function RegisterPage() {
             <Shield className="w-8 h-8 text-primary" />
           </div>
           <CardTitle className="text-2xl font-bold tracking-tight">Create Account</CardTitle>
-          <CardDescription>Join the DefenseLink network</CardDescription>
+          <CardDescription>Join the Inventra network</CardDescription>
         </CardHeader>
         <CardContent className="px-8 pb-8">
           <form onSubmit={handleRegister} className="space-y-6">
