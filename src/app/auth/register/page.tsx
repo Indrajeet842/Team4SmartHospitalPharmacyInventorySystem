@@ -11,7 +11,37 @@ import { useToast } from '@/hooks/use-toast';
 import { Role } from '@/lib/types';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { setDoc, doc } from "firebase/firestore";
+import { auth, db } from "@/lib/firebase";
 
+async function registerUser(
+  email: string, 
+  password: string,
+   role: Role) {
+  try {
+    // 1️⃣ Create user in Firebase Authentication
+    const userCredential = await createUserWithEmailAndPassword(
+      auth,
+      email,
+      password
+    );
+
+    const user = userCredential.user;
+
+    // 2️⃣ Save additional info in Firestore
+    await setDoc(doc(db, "users", user.uid), {
+      email: user.email,
+      role: role,
+      createdAt: new Date(),
+    });
+
+    alert("User Registered Successfully!");
+
+  } catch (error: any) {
+    console.error(error.message);
+  }
+}
 export default function RegisterPage() {
   const [role, setRole] = useState<Role>('staff');
   const [formData, setFormData] = useState({

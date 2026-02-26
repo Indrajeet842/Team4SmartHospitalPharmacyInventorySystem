@@ -13,7 +13,8 @@ import {
   TrendingUp,
   Wrench,
   LogOut,
-  ArrowLeftRight
+  ArrowLeftRight,
+  Bell
 } from 'lucide-react';
 
 interface SidebarNavProps {
@@ -23,37 +24,42 @@ interface SidebarNavProps {
 export function SidebarNav({ role }: SidebarNavProps) {
   const pathname = usePathname();
 
-  const getLinks = () => {
-    const common = [
-      { href: `/dashboard/${role}`, label: 'Overview', icon: LayoutDashboard },
-      { href: `/dashboard/${role}/inventory`, label: 'Inventory', icon: Package },
-    ];
 
+  // Custom sidebar for staff role as per user request
+  const getLinks = () => {
+    if (role === 'staff') {
+      return [
+        { href: `/dashboard/staff/products`, label: 'Products', icon: Package },
+        { href: `/dashboard/staff/stock`, label: 'Stock IN / OUT', icon: ArrowLeftRight },
+        { href: `/dashboard/staff/alerts`, label: 'Alerts', icon: Bell },
+        { href: `/dashboard/staff/transactions`, label: 'Transactions', icon: ClipboardList },
+        { href: `/dashboard/staff/reports`, label: 'Report & Analysis', icon: TrendingUp },
+      ];
+    }
     if (role === 'admin') {
       return [
-        ...common,
-        { href: `/dashboard/${role}/transactions`, label: 'Transaction Log', icon: ArrowLeftRight },
-        { href: `/dashboard/${role}/users`, label: 'User Management', icon: Users },
-        { href: `/dashboard/${role}/assignments`, label: 'Equipment Tracking', icon: ClipboardList },
-        { href: `/dashboard/${role}/settings`, label: 'System Settings', icon: Settings },
+        { href: `/dashboard/admin/category`, label: 'Category', icon: Package },
+        { href: `/dashboard/admin/supplier`, label: 'Supplier', icon: Users },
+        { href: `/dashboard/admin/product`, label: 'Product', icon: ClipboardList },
+        { href: `/dashboard/admin/stock`, label: 'Stock', icon: ArrowLeftRight },
+        { href: `/dashboard/admin/alerts`, label: 'Alerts', icon: Bell },
+        { href: `/dashboard/admin/transactions`, label: 'Transactions', icon: History },
+        { href: `/dashboard/admin/reports`, label: 'Report & Analysis', icon: TrendingUp },
       ];
     }
-
     if (role === 'manager') {
       return [
-        ...common,
-        { href: `/dashboard/${role}/transactions`, label: 'Stock Movements', icon: ArrowLeftRight },
-        { href: `/dashboard/${role}/reports`, label: 'Usage Reports', icon: TrendingUp },
-        { href: `/dashboard/${role}/maintenance`, label: 'Predictive Maintenance', icon: Wrench },
-        { href: `/dashboard/${role}/assignments`, label: 'Assign Equipment', icon: ClipboardList },
+        { href: `/dashboard/manager/category`, label: 'Category', icon: Package },
+        { href: `/dashboard/manager/supplier`, label: 'Supplier', icon: Users },
+        { href: `/dashboard/manager/product`, label: 'Product', icon: ClipboardList },
+        { href: `/dashboard/manager/stock`, label: 'Stock', icon: ArrowLeftRight },
+        { href: `/dashboard/manager/alerts`, label: 'Alerts', icon: Bell },
+        { href: `/dashboard/manager/transactions`, label: 'Transactions', icon: History },
+        { href: `/dashboard/manager/reports`, label: 'Report & Analysis', icon: TrendingUp },
       ];
     }
-
-    return [
-      ...common,
-      { href: `/dashboard/${role}/assigned`, label: 'My Equipment', icon: ClipboardList },
-      { href: `/dashboard/${role}/history`, label: 'Request History', icon: History },
-    ];
+    // fallback
+    return [];
   };
 
   const links = getLinks();
@@ -78,7 +84,7 @@ export function SidebarNav({ role }: SidebarNavProps) {
           <span className="font-medium">{link.label}</span>
         </Link>
       ))}
-      
+
       <div className="mt-auto pt-4 border-t">
         <Link
           href="/auth/signin"
