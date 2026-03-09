@@ -29,7 +29,9 @@ export function SidebarNav({ role }: SidebarNavProps) {
     if (role === 'staff') {
       return [
         { href: `/dashboard/staff`, label: 'Dashboard', icon: LayoutDashboard },
-
+        { href: `/dashboard/staff/assigned`, label: 'Assigned Equipment', icon: Package },
+        { href: `/dashboard/staff/orders`, label: 'My Orders', icon: ClipboardList },
+        { href: `/dashboard/staff/cart`, label: 'Cart', icon: Package },
         { href: `/dashboard/staff/products`, label: 'Products', icon: Package },
         { href: `/dashboard/staff/stock`, label: 'Stock IN / OUT', icon: ArrowLeftRight },
         { href: `/dashboard/staff/alerts`, label: 'Alerts', icon: Bell },
@@ -42,6 +44,8 @@ export function SidebarNav({ role }: SidebarNavProps) {
       return [
         { href: `/dashboard/admin`, label: 'Dashboard', icon: LayoutDashboard },
 
+        { href: `/dashboard/admin/users`, label: 'Users', icon: Users },
+        
         { href: `/dashboard/admin/category`, label: 'Category', icon: Package },
         { href: `/dashboard/admin/supplier`, label: 'Supplier', icon: Users },
         { href: `/dashboard/admin/product`, label: 'Product', icon: ClipboardList },
@@ -55,7 +59,7 @@ export function SidebarNav({ role }: SidebarNavProps) {
     if (role === 'manager') {
       return [
         { href: `/dashboard/manager`, label: 'Dashboard', icon: LayoutDashboard },
-
+        { href: `/dashboard/manager/orders`, label: 'Orders', icon: ClipboardList },
         { href: `/dashboard/manager/category`, label: 'Category', icon: Package },
         { href: `/dashboard/manager/supplier`, label: 'Supplier', icon: Users },
         { href: `/dashboard/manager/product`, label: 'Product', icon: ClipboardList },

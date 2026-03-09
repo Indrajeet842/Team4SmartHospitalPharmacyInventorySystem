@@ -8,8 +8,12 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogFooter } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 
+/* 🔹 Added Firestore */
+import { addDoc, collection, Timestamp } from "firebase/firestore";
+import { db } from "@/lib/firebase";
+
 export default function StaffProductsPage() {
-  // State for products
+
   const [products, setProducts] = useState([
     { id: 1, name: "Standard Issue Radio", qty: 18 },
     { id: 2, name: "Tactical Vest (L)", qty: 12 },
@@ -22,15 +26,44 @@ export default function StaffProductsPage() {
     { id: 9, name: "Field Medical Kit", qty: 20 },
     { id: 10, name: "Combat Boots", qty: 30 },
   ]);
+
   const [open, setOpen] = useState(false);
   const [newProduct, setNewProduct] = useState({ name: "", qty: "" });
   const [error, setError] = useState("");
 
+  /* 🔹 Add To Cart Function */
+  const addToCart = async (product: any) => {
+
+    try {
+
+      await addDoc(collection(db, "cart"), {
+
+        productId: product.id,
+        productName: product.name,
+        quantity: 1,
+        userId: "staff1", // later replace with logged user
+        createdAt: Timestamp.now(),
+
+      });
+
+      alert("Product added to cart");
+
+    } catch (err) {
+
+      console.error(err);
+      alert("Error adding to cart");
+
+    }
+
+  };
+
   const handleAddProduct = () => {
+
     if (!newProduct.name.trim() || !newProduct.qty.trim() || isNaN(Number(newProduct.qty))) {
       setError("Please enter a valid product name and quantity.");
       return;
     }
+
     setProducts([
       ...products,
       {
@@ -39,36 +72,73 @@ export default function StaffProductsPage() {
         qty: Number(newProduct.qty),
       },
     ]);
+
     setNewProduct({ name: "", qty: "" });
     setError("");
     setOpen(false);
+
   };
 
   return (
+
     <div className="space-y-6 bg-[#f8fafc] min-h-screen p-4">
-      <h1 className="text-3xl font-extrabold mb-4 text-gray-800 drop-shadow-sm">Staff Inventory Dashboard</h1>
+
+      <h1 className="text-3xl font-extrabold mb-4 text-gray-800 drop-shadow-sm">
+        Staff Inventory Dashboard
+      </h1>
+
       <Card className="shadow-2xl rounded-2xl border-none">
+
         <CardHeader className="pb-2 flex flex-row items-center justify-between">
-          <CardTitle className="text-2xl font-bold text-gray-900">Products</CardTitle>
+
+          <CardTitle className="text-2xl font-bold text-gray-900">
+            Products
+          </CardTitle>
+
           <Button
             className="bg-green-700 hover:bg-green-800 text-white font-semibold rounded-lg px-5 py-2 shadow-md"
             onClick={() => setOpen(true)}
           >
             + Add Product
           </Button>
+
         </CardHeader>
+
         <CardContent>
+
           <div className="overflow-x-auto rounded-xl">
+
             <Table>
+
               <TableHeader>
+
                 <TableRow className="bg-green-700 hover:bg-green-700 cursor-default">
-                  <TableHead className="text-white font-bold text-lg">ID</TableHead>
-                  <TableHead className="text-white font-bold text-lg">Name</TableHead>
-                  <TableHead className="text-white font-bold text-lg">Qty</TableHead>
+
+                  <TableHead className="text-white font-bold text-lg">
+                    ID
+                  </TableHead>
+
+                  <TableHead className="text-white font-bold text-lg">
+                    Name
+                  </TableHead>
+
+                  <TableHead className="text-white font-bold text-lg">
+                    Qty
+                  </TableHead>
+
+                  {/* 🔹 Added Column */}
+                  <TableHead className="text-white font-bold text-lg">
+                    Action
+                  </TableHead>
+
                 </TableRow>
+
               </TableHeader>
+
               <TableBody>
+
                 {products.map((product, idx) => (
+
                   <TableRow
                     key={product.id}
                     className={cn(
@@ -77,30 +147,64 @@ export default function StaffProductsPage() {
                       "hover:bg-green-50 cursor-pointer"
                     )}
                   >
-                    <TableCell className="font-semibold text-gray-700">{product.id}</TableCell>
-                    <TableCell className="text-gray-700">{product.name}</TableCell>
-                    <TableCell className="text-gray-700">{product.qty}</TableCell>
+
+                    <TableCell className="font-semibold text-gray-700">
+                      {product.id}
+                    </TableCell>
+
+                    <TableCell className="text-gray-700">
+                      {product.name}
+                    </TableCell>
+
+                    <TableCell className="text-gray-700">
+                      {product.qty}
+                    </TableCell>
+
+                    {/* 🔹 Add To Cart Button */}
+                    <TableCell>
+
+                      <Button
+                        onClick={() => addToCart(product)}
+                        className="bg-blue-600 hover:bg-blue-700 text-white"
+                      >
+                        Add To Cart
+                      </Button>
+
+                    </TableCell>
+
                   </TableRow>
+
                 ))}
+
               </TableBody>
+
             </Table>
+
           </div>
+
         </CardContent>
+
       </Card>
 
       {/* Add Product Modal */}
+
       <Dialog open={open} onOpenChange={setOpen}>
+
         <DialogContent className="max-w-md rounded-2xl">
+
           <DialogHeader>
             <DialogTitle>Add New Product</DialogTitle>
           </DialogHeader>
+
           <div className="space-y-4 py-2">
+
             <Input
               placeholder="Product Name"
               value={newProduct.name}
               onChange={e => setNewProduct({ ...newProduct, name: e.target.value })}
               className="rounded-lg"
             />
+
             <Input
               placeholder="Quantity"
               type="number"
@@ -108,18 +212,32 @@ export default function StaffProductsPage() {
               onChange={e => setNewProduct({ ...newProduct, qty: e.target.value })}
               className="rounded-lg"
             />
-            {error && <div className="text-red-600 text-sm font-medium">{error}</div>}
+
+            {error && (
+              <div className="text-red-600 text-sm font-medium">
+                {error}
+              </div>
+            )}
+
           </div>
+
           <DialogFooter>
+
             <Button
               className="bg-green-700 hover:bg-green-800 text-white font-semibold rounded-lg"
               onClick={handleAddProduct}
             >
               Add Product
             </Button>
+
           </DialogFooter>
+
         </DialogContent>
+
       </Dialog>
+
     </div>
+
   );
+
 }
