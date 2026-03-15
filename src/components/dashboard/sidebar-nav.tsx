@@ -29,7 +29,7 @@ export function SidebarNav({ role }: SidebarNavProps) {
     if (role === 'staff') {
       return [
         { href: `/dashboard/staff`, label: 'Dashboard', icon: LayoutDashboard },
-        { href: `/dashboard/staff/assigned`, label: 'Assigned Equipment', icon: Package },
+        { href: `/dashboard/staff/assigned-equipment`, label: 'Assigned Equipment', icon: Package },
         { href: `/dashboard/staff/orders`, label: 'My Orders', icon: ClipboardList },
         { href: `/dashboard/staff/cart`, label: 'Cart', icon: Package },
         { href: `/dashboard/staff/products`, label: 'Products', icon: Package },

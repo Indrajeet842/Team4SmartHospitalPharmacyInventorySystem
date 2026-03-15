@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, onSnapshot } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import ManagerGuard from "@/components/dashboard/ManagerGuard";
 
@@ -17,12 +17,15 @@ import {
   Cell
 } from "recharts";
 
-/* ✅ Added Types */
+/* TYPES */
+
 type Product = {
   id: string;
   name?: string;
   quantity?: number;
+  qty?: number;
   lowStockThreshold?: number;
+  lowStock?: number;
 };
 
 type Transaction = {
@@ -32,7 +35,6 @@ type Transaction = {
 
 export default function ReportsPage() {
 
-  /* ✅ Updated state types */
   const [products, setProducts] = useState<Product[]>([]);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
 
@@ -42,68 +44,115 @@ export default function ReportsPage() {
     lowStock: 0
   });
 
+  /* ----------------------------- */
+  /* REALTIME PRODUCTS LISTENER   */
+  /* ----------------------------- */
+
   useEffect(() => {
 
-    const fetchData = async () => {
+    const unsubProducts = onSnapshot(
+      collection(db, "products"),
+      (snapshot) => {
 
-      const prodSnap = await getDocs(collection(db, "products"));
-      const transSnap = await getDocs(collection(db, "transactions"));
+        const prodData: Product[] = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...(doc.data() as Omit<Product, "id">)
+        }));
 
-      /* ✅ Cast Firestore data to Product type */
-      const prodData: Product[] = prodSnap.docs.map(d => ({
-        id: d.id,
-        ...(d.data() as Omit<Product, "id">)
-      }));
+        setProducts(prodData);
 
-      const transData: Transaction[] = transSnap.docs.map(d => ({
-        id: d.id,
-        ...(d.data() as Omit<Transaction, "id">)
-      }));
+        /* SUMMARY CALCULATIONS */
 
-      setProducts(prodData);
-      setTransactions(transData);
+        const totalProducts = prodData.length;
 
-      const totalProducts = prodData.length;
+        const totalStock = prodData.reduce((sum, p) => {
 
-      const totalStock = prodData.reduce(
-        (sum, p) => sum + (p.quantity || 0),
-        0
-      );
+          const quantity = p.quantity ?? p.qty ?? 0;
+          return sum + quantity;
 
-      const lowStock = prodData.filter(
-        p => (p.quantity || 0) <= (p.lowStockThreshold || 0)
-      ).length;
+        }, 0);
 
-      setSummary({
-        totalProducts,
-        totalStock,
-        lowStock
-      });
+        const lowStock = prodData.filter(p => {
 
-    };
+          const quantity = p.quantity ?? p.qty ?? 0;
+          const threshold = p.lowStockThreshold ?? p.lowStock ?? 5;
 
-    fetchData();
+          return quantity <= threshold;
+
+        }).length;
+
+        setSummary({
+          totalProducts,
+          totalStock,
+          lowStock
+        });
+
+      }
+    );
+
+    return () => unsubProducts();
 
   }, []);
 
-  // Chart data
+
+  /* ----------------------------- */
+  /* REALTIME TRANSACTIONS        */
+  /* ----------------------------- */
+
+  useEffect(() => {
+
+    const unsubTransactions = onSnapshot(
+      collection(db, "transactions"),
+      (snapshot) => {
+
+        const transData: Transaction[] = snapshot.docs.map(doc => ({
+          id: doc.id,
+          ...(doc.data() as Omit<Transaction, "id">)
+        }));
+
+        setTransactions(transData);
+
+      }
+    );
+
+    return () => unsubTransactions();
+
+  }, []);
+
+
+  /* ----------------------------- */
+  /* BAR CHART DATA (DYNAMIC)     */
+  /* ----------------------------- */
+
   const stockChart = products.map(p => ({
+
     name: p.name,
-    quantity: p.quantity
+
+    quantity: p.quantity ?? p.qty ?? 0
+
   }));
 
+
+  /* ----------------------------- */
+  /* PIE CHART DATA               */
+  /* ----------------------------- */
+
   const movement = [
+
     {
       name: "Stock IN",
       value: transactions.filter(t => t.type === "IN").length
     },
+
     {
       name: "Stock OUT",
       value: transactions.filter(t => t.type === "OUT").length
     }
+
   ];
 
   const COLORS = ["#16a34a", "#ef4444"];
+
 
   return (
 
@@ -115,33 +164,51 @@ export default function ReportsPage() {
           Reports & Analysis
         </h1>
 
-        {/* Summary Cards */}
+        {/* SUMMARY CARDS */}
+
         <div className="grid grid-cols-3 gap-4">
 
           <div className="bg-white p-5 rounded-lg shadow">
-            <h2 className="text-gray-500">Total Equipment</h2>
+
+            <h2 className="text-gray-500">
+              Total Equipment
+            </h2>
+
             <p className="text-2xl font-bold">
               {summary.totalProducts}
             </p>
+
           </div>
 
           <div className="bg-white p-5 rounded-lg shadow">
-            <h2 className="text-gray-500">Total Stock</h2>
+
+            <h2 className="text-gray-500">
+              Total Stock
+            </h2>
+
             <p className="text-2xl font-bold">
               {summary.totalStock}
             </p>
+
           </div>
 
           <div className="bg-white p-5 rounded-lg shadow">
-            <h2 className="text-gray-500">Low Stock Items</h2>
+
+            <h2 className="text-gray-500">
+              Low Stock Items
+            </h2>
+
             <p className="text-2xl font-bold text-red-600">
               {summary.lowStock}
             </p>
+
           </div>
 
         </div>
 
-        {/* Stock Chart */}
+
+        {/* BAR CHART */}
+
         <div className="bg-white p-6 rounded-lg shadow">
 
           <h2 className="text-lg font-semibold mb-4">
@@ -153,7 +220,9 @@ export default function ReportsPage() {
             <BarChart data={stockChart}>
 
               <XAxis dataKey="name"/>
+
               <YAxis/>
+
               <Tooltip/>
 
               <Bar
@@ -167,7 +236,9 @@ export default function ReportsPage() {
 
         </div>
 
-        {/* Stock Movement */}
+
+        {/* PIE CHART */}
+
         <div className="bg-white p-6 rounded-lg shadow">
 
           <h2 className="text-lg font-semibold mb-4">

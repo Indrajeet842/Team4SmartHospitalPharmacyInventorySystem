@@ -1,7 +1,9 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { DashboardLayout } from '@/components/dashboard/dashboard-layout';
 import { StatCard } from '@/components/dashboard/stat-card';
+
 import { 
   Package, 
   TrendingUp, 
@@ -13,9 +15,11 @@ import {
   ArrowUpRight,
   ClipboardCheck
 } from 'lucide-react';
+
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import Link from 'next/link';
+
 import { 
   BarChart, 
   Bar, 
@@ -27,7 +31,19 @@ import {
   Cell
 } from 'recharts';
 
+import { 
+  collection,
+  onSnapshot,
+  query,
+  orderBy,
+  limit
+} from "firebase/firestore";
+
+import { db } from "@/lib/firebase";
+
 export default function ManagerDashboard() {
+
+  const [activity,setActivity] = useState<any[]>([]);
 
   const stats = [
     { label: 'Inventory Value', value: '$2.4M', icon: TrendingUp, colorClass: 'bg-emerald-50 text-emerald-600' },
@@ -46,35 +62,79 @@ export default function ManagerDashboard() {
 
   const COLORS = ['#3B82F6', '#8B5CF6', '#10B981', '#F59E0B', '#EF4444'];
 
-  /* =============================== */
-  /* OPERATIONAL ACTIVITY DATA       */
-  /* =============================== */
+  /* ====================================== */
+  /* REALTIME OPERATION ACTIVITY FETCH      */
+  /* ====================================== */
 
-  const activity = [
-    {
-      type: "ISSUED",
-      message: "John received NVGs",
-      time: "10 minutes ago"
-    },
-    {
-      type: "RETURNED",
-      message: "Team Alpha returned radios",
-      time: "1 hour ago"
-    },
-    {
-      type: "REQUEST",
-      message: "Vehicle kit request approved",
-      time: "3 hours ago"
-    }
-  ];
+  useEffect(()=>{
+
+    const q = query(
+      collection(db,"transactions"),
+      orderBy("createdAt","desc"),
+      limit(5)
+    );
+
+    const unsub = onSnapshot(q,(snap)=>{
+
+      const data = snap.docs.map(doc=>{
+
+        const d:any = doc.data();
+
+        return {
+          id:doc.id,
+          type:d.type,
+          message:d.message,
+          createdAt:d.createdAt
+        }
+
+      });
+
+      setActivity(data);
+
+    });
+
+    return ()=>unsub();
+
+  },[]);
+
+  /* ====================================== */
+  /* TIME FORMATTER (AUTO UPDATE TIME AGO)  */
+  /* ====================================== */
+
+  const getTimeAgo = (timestamp:any)=>{
+
+    if(!timestamp) return "";
+
+    const seconds = Math.floor(
+      (Date.now() - timestamp.toDate().getTime())/1000
+    );
+
+    const minutes = Math.floor(seconds/60);
+    const hours = Math.floor(minutes/60);
+
+    if(minutes < 1) return "Just now";
+    if(minutes < 60) return `${minutes} minutes ago`;
+    if(hours < 24) return `${hours} hours ago`;
+
+    return `${Math.floor(hours/24)} days ago`;
+
+  };
+
 
   return (
+
     <DashboardLayout role="manager" title="Operations Management">
 
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
+
         <div>
-          <h1 className="text-3xl font-bold tracking-tight">Resource Dashboard</h1>
-          <p className="text-muted-foreground mt-1">Oversee stock levels and operational readiness.</p>
+          <h1 className="text-3xl font-bold tracking-tight">
+            Resource Dashboard
+          </h1>
+
+          <p className="text-muted-foreground mt-1">
+            Oversee stock levels and operational readiness.
+          </p>
         </div>
 
         <Link href="/dashboard/manager/maintenance">
@@ -83,6 +143,7 @@ export default function ManagerDashboard() {
             <Activity className="w-4 h-4 ml-2" />
           </Button>
         </Link>
+
       </div>
 
       {/* Stats */}
@@ -92,18 +153,22 @@ export default function ManagerDashboard() {
         ))}
       </div>
 
-      {/* Charts + AI */}
+      {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
         <Card className="lg:col-span-2 border-none shadow-sm rounded-2xl overflow-hidden">
+
           <CardHeader>
             <CardTitle>Inventory Distribution</CardTitle>
-            <CardDescription>Stock distribution by equipment category.</CardDescription>
+            <CardDescription>
+              Stock distribution by equipment category.
+            </CardDescription>
           </CardHeader>
 
           <CardContent className="h-[300px]">
 
             <ResponsiveContainer width="100%" height="100%">
+
               <BarChart data={chartData}>
 
                 <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#f0f0f0" />
@@ -121,114 +186,60 @@ export default function ManagerDashboard() {
                   tick={{ fontSize: 12, fill: '#666' }}
                 />
 
-                <Tooltip
-                  cursor={{ fill: '#f9fafb' }}
-                  contentStyle={{
-                    borderRadius: '12px',
-                    border: 'none',
-                    boxShadow: '0 10px 15px -3px rgba(0,0,0,0.1)'
-                  }}
-                />
+                <Tooltip/>
 
-                <Bar dataKey="val" radius={[8, 8, 0, 0]} barSize={40}>
-
-                  {chartData.map((entry, index) => (
+                <Bar dataKey="val" radius={[8,8,0,0]} barSize={40}>
+                  {chartData.map((entry,index)=>(
                     <Cell key={index} fill={COLORS[index % COLORS.length]} />
                   ))}
-
                 </Bar>
 
               </BarChart>
+
             </ResponsiveContainer>
 
           </CardContent>
-        </Card>
 
-        {/* AI Insights */}
-        <Card className="border-none shadow-sm rounded-2xl overflow-hidden bg-gradient-to-br from-blue-500 to-blue-700 text-white">
-
-          <CardHeader>
-            <CardTitle>AI Insights</CardTitle>
-            <CardDescription className="text-blue-100">
-              Predictive maintenance summary
-            </CardDescription>
-          </CardHeader>
-
-          <CardContent className="space-y-6">
-
-            <div className="space-y-2">
-              <p className="text-xs uppercase tracking-wider opacity-60">High Risk Unit</p>
-              <h4 className="font-bold text-xl">UAV-Alpha (SN-009)</h4>
-              <p className="text-sm opacity-80">
-                Motor vibrations detected. Failure predicted within 48 operating hours.
-              </p>
-            </div>
-
-            <div className="h-px bg-white/20 w-full" />
-
-            <div className="space-y-2">
-
-              <p className="text-xs uppercase tracking-wider opacity-60">
-                Fleet Status
-              </p>
-
-              <div className="flex justify-between items-end">
-                <span className="text-3xl font-bold">82%</span>
-                <span className="text-xs opacity-70">Readiness Level</span>
-              </div>
-
-              <div className="h-2 bg-white/20 rounded-full overflow-hidden">
-                <div className="h-full bg-emerald-400 w-[82%]" />
-              </div>
-
-            </div>
-
-            <Link href="/dashboard/manager/maintenance">
-              <Button
-                variant="secondary"
-                className="w-full bg-white text-blue-600 hover:bg-blue-50 border-none rounded-xl"
-              >
-                Open AI Tool
-                <ArrowRight className="w-4 h-4 ml-2" />
-              </Button>
-            </Link>
-
-          </CardContent>
         </Card>
 
       </div>
 
       {/* ===================================== */}
-      {/* NEW SECTION — OPERATIONAL ACTIVITY     */}
+      {/* DYNAMIC OPERATIONS ACTIVITY           */}
       {/* ===================================== */}
 
       <Card className="border-none shadow-sm rounded-2xl">
 
         <CardHeader>
           <CardTitle>Operations Activity</CardTitle>
+
           <CardDescription>
             Equipment issued, returned and approved requests
           </CardDescription>
+
         </CardHeader>
 
         <CardContent className="space-y-4">
 
-          {activity.map((item, i) => (
+          {activity.map((item)=> (
 
-            <div key={i} className="flex items-center justify-between border-b pb-3">
+            <div
+              key={item.id}
+              className="flex items-center justify-between border-b pb-3"
+            >
 
               <div className="flex items-center gap-3">
 
-                {item.type === "ISSUED" && (
-                  <ArrowUpRight className="text-red-500 w-5 h-5" />
+                {item.type === "IN" && (
+                  <ArrowUpRight className="text-red-500 w-5 h-5"/>
                 )}
 
-                {item.type === "RETURNED" && (
-                  <ArrowDownRight className="text-green-500 w-5 h-5" />
+                {item.type === "OUT" && (
+                  <ArrowDownRight className="text-green-500 w-5 h-5"/>
                 )}
 
                 {item.type === "REQUEST" && (
-                  <ClipboardCheck className="text-blue-500 w-5 h-5" />
+                  <ClipboardCheck className="text-blue-500 w-5 h-5"/>
                 )}
 
                 <span className="font-medium">
@@ -238,7 +249,7 @@ export default function ManagerDashboard() {
               </div>
 
               <span className="text-sm text-gray-500">
-                {item.time}
+                {getTimeAgo(item.createdAt)}
               </span>
 
             </div>
@@ -250,5 +261,7 @@ export default function ManagerDashboard() {
       </Card>
 
     </DashboardLayout>
+
   );
+
 }

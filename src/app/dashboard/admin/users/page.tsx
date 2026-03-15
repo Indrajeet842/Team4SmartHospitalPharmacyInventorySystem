@@ -24,6 +24,9 @@ const [editingUser,setEditingUser] = useState<User | null>(null);
 const [editName,setEditName] = useState("");
 const [editRole,setEditRole] = useState("");
 
+// ⭐ refresh timer
+const [timeRefresh,setTimeRefresh] = useState(0);
+
 const fetchUsers = async () => {
 
 const snap = await getDocs(collection(db,"users"));
@@ -40,6 +43,19 @@ id:d.id,
 useEffect(()=>{
 fetchUsers();
 },[]);
+
+
+// ⭐ auto refresh every minute
+useEffect(()=>{
+
+const interval = setInterval(()=>{
+setTimeRefresh(prev=>prev+1);
+},60000);
+
+return ()=>clearInterval(interval);
+
+},[]);
+
 
 const handleCreate = async () => {
 
@@ -121,7 +137,7 @@ alert(`Password reset link sent to ${user.email}`);
 
 const formatLastLogin = (lastLogin:any) => {
 
-if(!lastLogin) return "Now";
+if(!lastLogin) return "Never";
 
 try{
 
@@ -149,7 +165,7 @@ if(days < 7) return `${days} days ago`;
 return loginDate.toLocaleDateString();
 
 }catch{
-return "Now";
+return "Unknown";
 }
 
 };

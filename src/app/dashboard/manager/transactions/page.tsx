@@ -10,7 +10,7 @@ type Transaction = {
   productName: string;
   quantity: number;
   type: "IN" | "OUT";
-  timestamp: any;
+  createdAt: any;
 };
 
 export default function TransactionsPage() {
@@ -21,72 +21,17 @@ export default function TransactionsPage() {
 
     const q = query(
       collection(db, "transactions"),
-      orderBy("timestamp", "desc")
+      orderBy("createdAt", "desc")
     );
 
     const snap = await getDocs(q);
 
-    /* If Firestore has data */
-    if (!snap.empty) {
+    const data: Transaction[] = snap.docs.map(doc => ({
+      id: doc.id,
+      ...(doc.data() as Omit<Transaction, "id">)
+    }));
 
-      const data: Transaction[] = snap.docs.map(doc => ({
-        id: doc.id,
-        ...(doc.data() as Omit<Transaction, "id">)
-      }));
-
-      setTransactions(data);
-      return;
-    }
-
-    /* ----------------------------- */
-    /* SAMPLE TRANSACTION HISTORY    */
-    /* ----------------------------- */
-
-    const sample: Transaction[] = [
-
-      {
-        id: "1",
-        productName: "NVGs Gen 3",
-        quantity: 2,
-        type: "OUT",
-        timestamp: { toDate: () => new Date("2026-01-21T17:19:00") }
-      },
-
-      {
-        id: "2",
-        productName: "Standard Issue Radio",
-        quantity: 5,
-        type: "IN",
-        timestamp: { toDate: () => new Date("2026-01-22T09:45:00") }
-      },
-
-      {
-        id: "3",
-        productName: "Ballistic Helmet",
-        quantity: 1,
-        type: "OUT",
-        timestamp: { toDate: () => new Date("2026-01-22T10:10:00") }
-      },
-
-      {
-        id: "4",
-        productName: "Field Medical Kit",
-        quantity: 10,
-        type: "IN",
-        timestamp: { toDate: () => new Date("2026-01-22T11:00:00") }
-      },
-
-      {
-        id: "5",
-        productName: "Satcom Transceiver",
-        quantity: 1,
-        type: "OUT",
-        timestamp: { toDate: () => new Date("2026-01-22T12:30:00") }
-      }
-
-    ];
-
-    setTransactions(sample);
+    setTransactions(data);
 
   };
 
@@ -109,15 +54,13 @@ export default function TransactionsPage() {
           <table className="w-full">
 
             <thead className="bg-blue-600 text-white">
-
-              <tr>
-                <th className="p-3 text-left">Equipment</th>
-                <th>Movement</th>
-                <th>Quantity</th>
-                <th>Date</th>
-              </tr>
-
-            </thead>
+<tr>
+<th className="p-4 text-left w-1/3">Equipment</th>
+<th className="p-4 text-center w-1/4">Movement</th>
+<th className="p-4 text-center w-1/6">Quantity</th>
+<th className="p-4 text-right w-1/4">Date</th>
+</tr>
+</thead>
 
             <tbody>
 
@@ -133,8 +76,8 @@ export default function TransactionsPage() {
 
                 transactions.map(t => {
 
-                  const date = t.timestamp?.toDate
-                    ? t.timestamp.toDate().toLocaleString()
+                  const date = t.createdAt?.toDate
+                    ? t.createdAt.toDate().toLocaleString()
                     : "Unknown";
 
                   return (

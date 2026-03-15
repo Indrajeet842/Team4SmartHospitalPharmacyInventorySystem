@@ -11,10 +11,10 @@ import { useToast } from '@/hooks/use-toast';
 import { Role } from '@/lib/types';
 import Link from 'next/link';
 import { cn } from '@/lib/utils';
-
-import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth, db } from "@/lib/firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, updateDoc, serverTimestamp, getDoc } from "firebase/firestore";
+import { signInWithEmailAndPassword } from "firebase/auth";
+
 
 export default function SignInPage() {
   const [role, setRole] = useState<Role>('staff');
@@ -29,23 +29,23 @@ export default function SignInPage() {
     setLoading(true);
 
     try {
-      // 🔥 1️⃣ Login with Firebase Auth
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
 
-      const user = userCredential.user;
+const user = userCredential.user;
 
-      // 🔥 2️⃣ Get user role from Firestore
-      const userDoc = await getDoc(doc(db, "users", user.uid));
+// update last login
+await updateDoc(doc(db, "users", user.uid), {
+  lastLogin: serverTimestamp()
+});
 
-      if (!userDoc.exists()) {
-        throw new Error("User data not found.");
-      }
+// get user data
+const userDoc = await getDoc(doc(db, "users", user.uid));
 
-      const userData = userDoc.data();
+if (!userDoc.exists()) {
+  throw new Error("User data not found.");
+}
+
+const userData = userDoc.data();
 
       // ✅ FIX: Save session for guards
       localStorage.setItem(

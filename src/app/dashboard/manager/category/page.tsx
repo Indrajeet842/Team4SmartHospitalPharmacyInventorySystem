@@ -5,20 +5,27 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 import ManagerGuard from "@/components/dashboard/ManagerGuard";
 
+interface Category {
+  id: string;
+  name: string;
+  description: string;
+}
+
 export default function CategoryPage() {
 
-  const [categories, setCategories] = useState<any[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const [filter, setFilter] = useState("");
 
   const fetchData = async () => {
+
     const snap = await getDocs(collection(db, "categories"));
 
-    setCategories(
-      snap.docs.map(d => ({
-        id: d.id,
-        ...d.data()
-      }))
-    );
+    const data: Category[] = snap.docs.map(doc => ({
+      id: doc.id,
+      ...(doc.data() as Omit<Category, "id">)
+    }));
+
+    setCategories(data);
   };
 
   useEffect(() => {
@@ -32,7 +39,7 @@ export default function CategoryPage() {
   const filteredCategories = !filter
     ? categories
     : categories.filter(cat =>
-        cat.name.toLowerCase().includes(filter.toLowerCase())
+        cat.name?.toLowerCase().includes(filter.toLowerCase())
       );
 
   return (
@@ -66,6 +73,7 @@ export default function CategoryPage() {
             <thead className="bg-blue-600 text-white">
 
               <tr>
+
                 <th className="p-3 text-left">
                   Category Name
                 </th>
