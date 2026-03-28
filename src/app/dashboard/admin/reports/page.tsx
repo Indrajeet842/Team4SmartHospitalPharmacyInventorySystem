@@ -17,7 +17,7 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "@/lib/firebase";
 
 /* ============================= */
-/*   DEFENCE REPORT (DYNAMIC)    */
+/*   PHARMACY REPORT (DYNAMIC)    */
 /* ============================= */
 
 export default function AdminReportsPage() {
@@ -117,7 +117,7 @@ export default function AdminReportsPage() {
         : filtered.filter((row) => selectedRows.includes(row.sku));
 
     let csv =
-      "SKU,Equipment Name,Category,Supplier,Current Stock,Total IN,Total OUT\n";
+      "SKU,Medicine Name,Category,Supplier,Current Stock,Total IN,Total OUT\n";
 
     selectedData.forEach((row) => {
       csv += `${row.sku},${row.name},${row.category},${row.supplier},${row.current},${row.totalIn},${row.totalOut}\n`;
@@ -128,7 +128,7 @@ export default function AdminReportsPage() {
 
     const link = document.createElement("a");
     link.href = url;
-    link.download = "defence-equipment-report.csv";
+    link.download = "pharmacy-medicine-report.csv";
     link.click();
   };
 
@@ -159,7 +159,7 @@ export default function AdminReportsPage() {
         <CardHeader className="pb-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
 
           <CardTitle className="text-2xl font-bold text-blue-800">
-            Defence Equipment Reports & Analytics
+            Pharmacy Medicine Reports & Analytics
           </CardTitle>
 
           <div className="flex flex-wrap gap-4 items-end">
@@ -204,13 +204,13 @@ export default function AdminReportsPage() {
 
             <div className="flex flex-col">
               <label className="text-sm font-semibold mb-1">
-                Equipment Name(s)
+                Medicine Name(s)
               </label>
               <Input
                 value={filter}
                 onChange={(e) => setFilter(e.target.value)}
                 className="rounded-lg"
-                placeholder="Search defence equipment..."
+                placeholder="Search pharmacy medicine..."
               />
             </div>
 
@@ -237,7 +237,7 @@ export default function AdminReportsPage() {
 
                   <TableHead className="text-white">Select</TableHead>
                   <TableHead className="text-white">SKU</TableHead>
-                  <TableHead className="text-white">Equipment Name</TableHead>
+                  <TableHead className="text-white">Medicine Name</TableHead>
                   <TableHead className="text-white">Category</TableHead>
                   <TableHead className="text-white">Supplier</TableHead>
                   <TableHead className="text-white">Current Stock</TableHead>
@@ -297,7 +297,7 @@ export default function AdminReportsPage() {
         <CardContent className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
 
           <div className="bg-blue-50 p-4 rounded-xl">
-            <p className="text-sm text-gray-500">Most Issued Equipment</p>
+            <p className="text-sm text-gray-500">Most Issued Medicine</p>
             <p className="text-lg font-semibold">{mostIssued?.name || "-"}</p>
           </div>
 

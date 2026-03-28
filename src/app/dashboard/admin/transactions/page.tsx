@@ -115,7 +115,7 @@ export default function TransactionsPage() {
               <TableRow className="bg-blue-700 hover:bg-blue-700">
 
                 <TableHead className="text-white">Type</TableHead>
-                <TableHead className="text-white">Equipment</TableHead>
+                <TableHead className="text-white">Medicine</TableHead>
                 <TableHead className="text-white">Quantity</TableHead>
                 <TableHead className="text-white">Reason</TableHead>
                 <TableHead className="text-white">User</TableHead>

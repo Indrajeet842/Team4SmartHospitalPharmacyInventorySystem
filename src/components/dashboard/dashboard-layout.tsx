@@ -67,7 +67,7 @@ export function DashboardLayout({ children, role, title }: DashboardLayoutProps)
           <div className="flex-1 max-w-md mx-8 hidden sm:block">
             <div className="relative">
               <Search className="absolute left-3 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input placeholder="Search equipment, users..." className="pl-10 bg-muted/50 border-none rounded-xl" />
+              <Input placeholder="Search medicine, users..." className="pl-10 bg-muted/50 border-none rounded-xl" />
             </div>
           </div>
 

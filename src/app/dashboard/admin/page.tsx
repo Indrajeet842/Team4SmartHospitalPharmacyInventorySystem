@@ -46,7 +46,7 @@ export default function AdminDashboard() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">Intelligence Hub</h1>
-           <p className="text-muted-foreground mt-1">High-level visibility into defence inventory and logistical operations.</p>
+           <p className="text-muted-foreground mt-1">High-level visibility into pharmacy inventory and logistical operations.</p>
         </div>
         <div className="flex gap-3">
           <Link href="/dashboard/admin/inventory">
@@ -82,7 +82,7 @@ export default function AdminDashboard() {
             <Table>
               <TableHeader className="bg-muted/50">
                 <TableRow>
-                  <TableHead className="pl-6 font-bold">Equipment</TableHead>
+                  <TableHead className="pl-6 font-bold">medicine</TableHead>
                   <TableHead className="font-bold">Serial No.</TableHead>
                   <TableHead className="font-bold">Qty</TableHead>
                   <TableHead className="font-bold">Status</TableHead>

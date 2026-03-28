@@ -32,11 +32,11 @@ export default function pharmacistDashboard() {
   const router = useRouter();
 
   const [alerts,setAlerts] = useState<any[]>([]);
-  const [myEquipment,setMyEquipment] = useState<any[]>([]);
+  const [myMedicine,setMyMedicine] = useState<any[]>([]);
 
  
 /* -------------------------------------------------- */
-/* Fetch Assigned Equipment for pharmacist (FINAL FIX)     */
+/* Fetch Assigned medicine for pharmacist (FINAL FIX)     */
 /* -------------------------------------------------- */
 
 useEffect(()=>{
@@ -71,7 +71,7 @@ useEffect(()=>{
 
       });
 
-      setMyEquipment(filtered.slice(0,2));
+      setMyMedicine(filtered.slice(0,2));
 
     });
 
@@ -141,19 +141,19 @@ useEffect(()=>{
 
         <div className="lg:col-span-2 space-y-8">
 
-          {/* Assigned Equipment */}
+          {/* Assigned medicine */}
           <section>
 
             <div className="flex items-center justify-between mb-4">
 
               <h2 className="text-2xl font-bold tracking-tight">
-                Assigned Equipment
+                Assigned Medicine
               </h2>
 
               <Button
                 variant="link"
                 className="text-primary font-semibold p-0"
-                onClick={()=>router.push("/dashboard/pharmacist/assigned-equipment")}
+                onClick={()=>router.push("/dashboard/pharmacist/assigned-medicine")}
               >
                 View All
               </Button>
@@ -162,13 +162,13 @@ useEffect(()=>{
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
 
-              {myEquipment.length === 0 && (
+              {myMedicine.length === 0 && (
                 <p className="text-sm text-muted-foreground">
-                  No assigned equipment
+                  No assigned medicine
                 </p>
               )}
 
-              {myEquipment.map((item:any) => (
+              {myMedicine.map((item:any) => (
 
                 <Card
                   key={item.id}
@@ -238,7 +238,7 @@ useEffect(()=>{
 
           {/* Remaining code unchanged */}
 
-          <h2 className="text-2xl font-bold tracking-tight mb-4">
+          {/* <h2 className="text-2xl font-bold tracking-tight mb-4">
             Inventory Quick View
           </h2>
 
@@ -280,7 +280,7 @@ useEffect(()=>{
 
             </CardContent>
 
-          </Card>
+          </Card> */}
 
           {/* pharmacist Alert View */}
           <section>

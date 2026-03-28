@@ -46,7 +46,7 @@ export default function TransactionsPage() {
       <div className="space-y-6">
 
         <h1 className="text-3xl font-bold">
-          Equipment Transaction History
+          Medicine Transaction History
         </h1>
 
         <div className="bg-white rounded-lg shadow overflow-hidden">
@@ -55,7 +55,7 @@ export default function TransactionsPage() {
 
             <thead className="bg-blue-600 text-white">
 <tr>
-<th className="p-4 text-left w-1/3">Equipment</th>
+<th className="p-4 text-left w-1/3">Medicine</th>
 <th className="p-4 text-center w-1/4">Movement</th>
 <th className="p-4 text-center w-1/6">Quantity</th>
 <th className="p-4 text-right w-1/4">Date</th>
@@ -85,7 +85,7 @@ export default function TransactionsPage() {
                     <tr key={t.id} className="border-b hover:bg-gray-50">
 
                       <td className="p-3 font-medium">
-                        {t.productName || "Equipment"}
+                        {t.productName || "Medicine"}
                       </td>
 
                       <td>

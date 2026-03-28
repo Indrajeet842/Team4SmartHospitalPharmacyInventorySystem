@@ -203,7 +203,7 @@ className="border p-2 rounded"
 >
 
 <option value="manager">Manager</option>
-<option value="pharmacist">pharmacist</option>
+<option value="pharmacist">Pharmacist</option>
 
 </select>
 
@@ -324,7 +324,7 @@ className="border p-2 rounded w-full"
 >
 
 <option value="manager">Manager</option>
-<option value="pharmacist">pharmacist</option>
+<option value="pharmacist">Pharmacist</option>
 
 </select>
 

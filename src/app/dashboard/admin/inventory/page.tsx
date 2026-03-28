@@ -38,30 +38,30 @@ import {
 } from '@/components/ui/dialog';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/hooks/use-toast';
-import { Equipment } from '@/lib/types';
+import { Medicine } from '@/lib/types';
 import { cn } from '@/lib/utils';
 import Link from 'next/link';
 
-const INITIAL_EQUIPMENT: Equipment[] = [
-  { id: '1', equipmentName: 'M1 Abrams Optic', category: 'Heavy Machinery', serialNumber: 'SN-90210', quantity: 12, minStockLevelLevel: 5, status: 'Available', createdAt: '2023-10-01' },
-  { id: '2', equipmentName: 'Tactical Drone v4', category: 'UAV', serialNumber: 'DR-4421', quantity: 3, minStockLevelLevel: 5, status: 'Low Stock', createdAt: '2023-11-15' },
-  { id: '3', equipmentName: 'Encrypted Radio RT-1', category: 'Communication', serialNumber: 'RAD-551', quantity: 45, minStockLevelLevel: 10, status: 'Available', createdAt: '2023-09-20' },
-  { id: '4', equipmentName: 'Level IV Plates', category: 'Personal Gear', serialNumber: 'AR-772', quantity: 150, minStockLevelLevel: 50, status: 'Available', createdAt: '2023-08-05' },
-  { id: '5', equipmentName: 'Night Vision Goggles Gen 3', category: 'Optics', serialNumber: 'NVG-102', quantity: 8, minStockLevelLevel: 10, status: 'Low Stock', createdAt: '2023-12-01' },
-  { id: '6', equipmentName: 'Satcom Terminal B1', category: 'Communication', serialNumber: 'SAT-882', quantity: 5, minStockLevelLevel: 2, status: 'Available', createdAt: '2024-01-10' },
-  { id: '7', equipmentName: 'Ballistic Helmet (MICH)', category: 'Personal Gear', serialNumber: 'HLM-003', quantity: 72, minStockLevelLevel: 20, status: 'Available', createdAt: '2023-07-22' },
+const INITIAL_MEDICINE: Medicine[] = [
+  { id: '1', medicineName: 'M1 Abrams Optic', category: 'Heavy Machinery', serialNumber: 'SN-90210', quantity: 12, minStockLevelLevel: 5, status: 'Available', createdAt: '2023-10-01' },
+  { id: '2', medicineName: 'Tactical Drone v4', category: 'UAV', serialNumber: 'DR-4421', quantity: 3, minStockLevelLevel: 5, status: 'Low Stock', createdAt: '2023-11-15' },
+  { id: '3', medicineName: 'Encrypted Radio RT-1', category: 'Communication', serialNumber: 'RAD-551', quantity: 45, minStockLevelLevel: 10, status: 'Available', createdAt: '2023-09-20' },
+  { id: '4', medicineName: 'Level IV Plates', category: 'Personal Gear', serialNumber: 'AR-772', quantity: 150, minStockLevelLevel: 50, status: 'Available', createdAt: '2023-08-05' },
+  { id: '5', medicineName: 'Night Vision Goggles Gen 3', category: 'Optics', serialNumber: 'NVG-102', quantity: 8, minStockLevelLevel: 10, status: 'Low Stock', createdAt: '2023-12-01' },
+  { id: '6', medicineName: 'Satcom Terminal B1', category: 'Communication', serialNumber: 'SAT-882', quantity: 5, minStockLevelLevel: 2, status: 'Available', createdAt: '2024-01-10' },
+  { id: '7', medicineName: 'Ballistic Helmet (MICH)', category: 'Personal Gear', serialNumber: 'HLM-003', quantity: 72, minStockLevelLevel: 20, status: 'Available', createdAt: '2023-07-22' },
 ];
 
 export default function InventoryPage() {
-  const [equipment, setEquipment] = useState<Equipment[]>(INITIAL_EQUIPMENT);
+  const [medicine, setMedicine] = useState<Medicine[]>(INITIAL_MEDICINE);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedItem, setSelectedItem] = useState<Equipment | null>(null);
+  const [selectedItem, setSelectedItem] = useState<Medicine | null>(null);
   const [transactionQty, setTransactionQty] = useState(1);
   const [transactionReason, setTransactionReason] = useState('');
   const { toast } = useToast();
 
-  const filteredEquipment = equipment.filter(item => 
-    item.equipmentName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  const filteredMedicine = medicine.filter(item => 
+    item.medicineName.toLowerCase().includes(searchTerm.toLowerCase()) ||
     item.serialNumber.toLowerCase().includes(searchTerm.toLowerCase()) ||
     item.category.toLowerCase().includes(searchTerm.toLowerCase())
   );
@@ -81,7 +81,7 @@ export default function InventoryPage() {
       return;
     }
 
-    const updatedEquipment = equipment.map(item => {
+    const updatedMedicine = medicine.map(item => {
       if (item.id === selectedItem.id) {
         const status = newQty <= item.minStockLevelLevel ? 'Low Stock' : 'Available';
         return { ...item, quantity: newQty, status: status as any };
@@ -89,10 +89,10 @@ export default function InventoryPage() {
       return item;
     });
 
-    setEquipment(updatedEquipment);
+    setMedicine(updatedMedicine);
     toast({
       title: `Stock ${type === 'IN' ? 'Increased' : 'Decreased'}`,
-      description: `Successfully ${type === 'IN' ? 'added' : 'removed'} ${transactionQty} units of ${selectedItem.equipmentName}.`,
+      description: `Successfully ${type === 'IN' ? 'added' : 'removed'} ${transactionQty} units of ${selectedItem.medicineName}.`,
     });
     setSelectedItem(null);
     setTransactionQty(1);
@@ -115,7 +115,7 @@ export default function InventoryPage() {
           </Link>
           <Button className="rounded-xl shadow-lg shadow-primary/25">
             <Plus className="w-4 h-4 mr-2" />
-            New Equipment
+            New Medicine
           </Button>
         </div>
       </div>
@@ -126,7 +126,7 @@ export default function InventoryPage() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-medium text-muted-foreground">Total Assets</p>
-                <h3 className="text-2xl font-bold mt-1">{equipment.length}</h3>
+                <h3 className="text-2xl font-bold mt-1">{medicine.length}</h3>
               </div>
               <div className="bg-primary/10 p-3 rounded-xl">
                 <Package className="w-6 h-6 text-primary" />
@@ -140,7 +140,7 @@ export default function InventoryPage() {
               <div>
                 <p className="text-sm font-medium text-orange-800">Low Stock Alerts</p>
                 <h3 className="text-2xl font-bold mt-1 text-orange-900">
-                  {equipment.filter(i => i.status === 'Low Stock').length}
+                  {medicine.filter(i => i.status === 'Low Stock').length}
                 </h3>
               </div>
               <div className="bg-orange-100 p-3 rounded-xl">
@@ -155,7 +155,7 @@ export default function InventoryPage() {
               <div>
                 <p className="text-sm font-medium text-emerald-800">Deployment Ready</p>
                 <h3 className="text-2xl font-bold mt-1 text-emerald-900">
-                  {equipment.reduce((acc, curr) => acc + curr.quantity, 0)} Units
+                  {medicine.reduce((acc, curr) => acc + curr.quantity, 0)} Units
                 </h3>
               </div>
               <div className="bg-emerald-100 p-3 rounded-xl">
@@ -188,7 +188,7 @@ export default function InventoryPage() {
           <Table>
             <TableHeader className="bg-muted/50">
               <TableRow>
-                <TableHead className="pl-6 font-bold">Equipment</TableHead>
+                <TableHead className="pl-6 font-bold">Medicine</TableHead>
                 <TableHead className="font-bold">Serial No.</TableHead>
                 <TableHead className="font-bold text-center">In Stock</TableHead>
                 <TableHead className="font-bold">Status</TableHead>
@@ -196,10 +196,10 @@ export default function InventoryPage() {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {filteredEquipment.map((item) => (
+              {filteredMedicine.map((item) => (
                 <TableRow key={item.id} className="hover:bg-muted/30">
                   <TableCell className="pl-6 py-4">
-                    <div className="font-bold">{item.equipmentName}</div>
+                    <div className="font-bold">{item.medicineName}</div>
                     <div className="text-[10px] text-muted-foreground uppercase">{item.category}</div>
                   </TableCell>
                   <TableCell className="font-mono text-xs">{item.serialNumber}</TableCell>
@@ -230,7 +230,7 @@ export default function InventoryPage() {
                       </DialogTrigger>
                       <DialogContent className="rounded-2xl">
                         <DialogHeader>
-                          <DialogTitle>Stock In: {selectedItem?.equipmentName}</DialogTitle>
+                          <DialogTitle>Stock In: {selectedItem?.medicineName}</DialogTitle>
                           <DialogDescription>Add new units to the inventory. This will be logged in the transaction history.</DialogDescription>
                         </DialogHeader>
                         <div className="grid gap-4 py-4">
@@ -268,7 +268,7 @@ export default function InventoryPage() {
                       </DialogTrigger>
                       <DialogContent className="rounded-2xl">
                         <DialogHeader>
-                          <DialogTitle>Stock Out: {selectedItem?.equipmentName}</DialogTitle>
+                          <DialogTitle>Stock Out: {selectedItem?.medicineName}</DialogTitle>
                           <DialogDescription>Remove units for deployment or maintenance. Ensure reasoning is documented.</DialogDescription>
                         </DialogHeader>
                         <div className="grid gap-4 py-4">
@@ -301,10 +301,10 @@ export default function InventoryPage() {
               ))}
             </TableBody>
           </Table>
-          {filteredEquipment.length === 0 && (
+          {filteredMedicine.length === 0 && (
             <div className="p-12 text-center text-muted-foreground">
               <Package className="w-12 h-12 mx-auto mb-4 opacity-20" />
-              <p>No equipment found matching your criteria.</p>
+              <p>No medicine found matching your criteria.</p>
             </div>
           )}
         </CardContent>

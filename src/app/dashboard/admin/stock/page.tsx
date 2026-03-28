@@ -66,7 +66,7 @@ export default function StockManagementPage() {
   const handleStockIn = () => {
 
     if (!search) {
-      alert("Search equipment name first");
+      alert("Search medicine name first");
       return;
     }
 
@@ -100,7 +100,7 @@ export default function StockManagementPage() {
   const handleStockOut = () => {
 
     if (!search) {
-      alert("Search equipment name first");
+      alert("Search medicine name first");
       return;
     }
 
@@ -159,7 +159,7 @@ export default function StockManagementPage() {
 
             <div className="flex flex-col">
               <label className="text-sm font-semibold mb-1">
-                Search Equipment
+                Search Medicine
               </label>
               <Input
                 value={search}
@@ -244,7 +244,7 @@ export default function StockManagementPage() {
                   </TableHead>
 
                   <TableHead className="text-white font-bold text-lg">
-                    Equipment Name
+                     Name
                   </TableHead>
 
                   <TableHead className="text-white font-bold text-lg">

@@ -161,7 +161,7 @@ export default function ManagerDashboard() {
           <CardHeader>
             <CardTitle>Inventory Distribution</CardTitle>
             <CardDescription>
-              Stock distribution by equipment category.
+              Stock distribution by medicine category.
             </CardDescription>
           </CardHeader>
 
@@ -214,7 +214,7 @@ export default function ManagerDashboard() {
           <CardTitle>Operations Activity</CardTitle>
 
           <CardDescription>
-            Equipment issued, returned and approved requests
+            Medicine issued, returned and approved requests
           </CardDescription>
 
         </CardHeader>

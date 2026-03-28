@@ -3,8 +3,8 @@ import './globals.css';
 import { Toaster } from "@/components/ui/toaster"
 
 export const metadata: Metadata = {
-  title: 'Smart Defence Equipment Inventory System',
-  description: 'Secure equipment management and predictive maintenance for defense operations.',
+  title: 'Smart Hospital Pharmacy Inventory System',
+  description: 'Secure medicine management and predictive maintenance for defense operations.',
 };
 
 export default function RootLayout({

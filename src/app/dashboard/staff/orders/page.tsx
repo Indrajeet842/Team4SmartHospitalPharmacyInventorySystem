@@ -49,7 +49,7 @@ return(
 <div className="space-y-6">
 
 <h1 className="text-2xl font-bold">
-My Equipment Requests
+My Medicine Requests
 </h1>
 
 {orders.length===0 &&(

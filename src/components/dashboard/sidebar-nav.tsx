@@ -29,7 +29,7 @@ export function SidebarNav({ role }: SidebarNavProps) {
     if (role === 'pharmacist') {
       return [
         { href: `/dashboard/pharmacist`, label: 'Dashboard', icon: LayoutDashboard },
-        { href: `/dashboard/pharmacist/assigned-equipment`, label: 'Assigned Equipment', icon: Package },
+        { href: `/dashboard/pharmacist/assigned-medicine`, label: 'Assigned Medicine', icon: Package },
         { href: `/dashboard/pharmacist/orders`, label: 'My Orders', icon: ClipboardList },
         { href: `/dashboard/pharmacist/cart`, label: 'Cart', icon: Package },
         { href: `/dashboard/pharmacist/products`, label: 'Products', icon: Package },

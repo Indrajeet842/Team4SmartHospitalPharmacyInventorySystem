@@ -9,9 +9,9 @@ export interface User {
   createdAt: string;
 }
 
-export interface Equipment {
+export interface Medicine {
   id: string;
-  equipmentName: string;
+  medicineName: string;
   category: string;
   serialNumber: string;
   quantity: number;
@@ -27,8 +27,8 @@ export type TransactionType = 'IN' | 'OUT' | 'ADJUSTMENT';
 
 export interface StockTransaction {
   id: string;
-  equipmentId: string;
-  equipmentName: string;
+  medicineId: string;
+  medicineName: string;
   type: TransactionType;
   quantity: number;
   reason: string;
@@ -42,7 +42,7 @@ export interface StockTransaction {
 
 export interface MaintenanceRecord {
   id: string;
-  equipmentId: string;
+  medicineId: string;
   task: string;
   frequency: string;
   dueDate: string;

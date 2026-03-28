@@ -66,7 +66,7 @@ await updateDoc(orderRef,{
 status:"approved"
 });
 
-/* ASSIGN EQUIPMENT TO pharmacist */
+/* ASSIGN medicine TO pharmacist */
 
 await addDoc(collection(db,"assignments"),{
 
@@ -98,7 +98,7 @@ return(
 <div>
 
 <h1 className="text-2xl font-bold mb-4">
-Equipment Requests
+Medicine Requests
 </h1>
 
 {orders.map(order=>(

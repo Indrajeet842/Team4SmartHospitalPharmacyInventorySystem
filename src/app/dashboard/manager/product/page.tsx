@@ -152,7 +152,7 @@ export default function ProductPage() {
       <div className="space-y-6">
 
         <h1 className="text-3xl font-bold">
-          Equipment Overview
+          Medicine Overview
         </h1>
 
         <div className="bg-white rounded-lg shadow overflow-hidden">
@@ -162,7 +162,7 @@ export default function ProductPage() {
             <thead className="bg-blue-600 text-white">
 
               <tr>
-                <th className="p-3 text-left">Equipment</th>
+                <th className="p-3 text-left">Medicine</th>
                 <th className="text-left">Category</th>
                 <th className="text-center">Available</th>
                 <th className="text-center">Assigned</th>
@@ -177,7 +177,7 @@ export default function ProductPage() {
 
                 <tr>
                   <td colSpan={5} className="text-center p-6 text-gray-500">
-                    No equipment available.
+                    No medicine available.
                   </td>
                 </tr>
 

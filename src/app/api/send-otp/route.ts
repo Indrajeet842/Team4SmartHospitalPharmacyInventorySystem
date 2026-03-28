@@ -30,7 +30,7 @@ export async function POST(req: Request) {
     });
 
     await transporter.sendMail({
-      from: `"Smart Defence System" <${process.env.EMAIL_USER}>`,
+      from: `"Smart medicine System" <${process.env.EMAIL_USER}>`,
       to: email,
       subject: "Password Reset OTP",
       html: `

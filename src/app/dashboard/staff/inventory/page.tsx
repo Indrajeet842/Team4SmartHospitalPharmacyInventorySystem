@@ -17,13 +17,13 @@ import {
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
 import { useToast } from '@/hooks/use-toast';
-import { Equipment } from '@/lib/types';
-
-const MOCK_INVENTORY: Equipment[] = [
-  { id: '1', equipmentName: 'M1 Abrams Optic', category: 'Heavy Machinery', serialNumber: 'SN-90210', quantity: 12, minStockLevelLevel: 5, status: 'Available', createdAt: '2023-10-01' },
-  { id: '3', equipmentName: 'Encrypted Radio RT-1', category: 'Communication', serialNumber: 'RAD-551', quantity: 45, minStockLevelLevel: 10, status: 'Available', createdAt: '2023-09-20' },
-  { id: '5', equipmentName: 'Night Vision Goggles Gen 3', category: 'Optics', serialNumber: 'NVG-102', quantity: 8, minStockLevelLevel: 10, status: 'Low Stock', createdAt: '2023-12-01' },
-  { id: '7', equipmentName: 'Ballistic Helmet (MICH)', category: 'Personal Gear', serialNumber: 'HLM-003', quantity: 72, minStockLevelLevel: 20, status: 'Available', createdAt: '2023-07-22' },
+import { Medicine } from '@/lib/types';
+//////////////////////////////////////////////////////////////////////////////////////////////
+const MOCK_INVENTORY: Medicine[] = [
+  { id: '1', medicineName: 'M1 Abrams Optic', category: 'Heavy Machinery', serialNumber: 'SN-90210', quantity: 12, minStockLevelLevel: 5, status: 'Available', createdAt: '2023-10-01' },
+  { id: '3', medicineName: 'Encrypted Radio RT-1', category: 'Communication', serialNumber: 'RAD-551', quantity: 45, minStockLevelLevel: 10, status: 'Available', createdAt: '2023-09-20' },
+  { id: '5', medicineName: 'Night Vision Goggles Gen 3', category: 'Optics', serialNumber: 'NVG-102', quantity: 8, minStockLevelLevel: 10, status: 'Low Stock', createdAt: '2023-12-01' },
+  { id: '7', medicineName: 'Ballistic Helmet (MICH)', category: 'Personal Gear', serialNumber: 'HLM-003', quantity: 72, minStockLevelLevel: 20, status: 'Available', createdAt: '2023-07-22' },
 ];
 
 export default function pharmacistInventoryPage() {
@@ -31,7 +31,7 @@ export default function pharmacistInventoryPage() {
   const { toast } = useToast();
 
   const filtered = MOCK_INVENTORY.filter(item => 
-    item.equipmentName.toLowerCase().includes(searchTerm.toLowerCase())
+    item.medicineName.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const handleRequest = (name: string) => {
@@ -67,7 +67,7 @@ export default function pharmacistInventoryPage() {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="pl-6 font-bold">Equipment</TableHead>
+                <TableHead className="pl-6 font-bold">Medicine</TableHead>
                 <TableHead className="font-bold">Category</TableHead>
                 <TableHead className="font-bold text-center">Availability</TableHead>
                 <TableHead className="pr-6 text-right">Actions</TableHead>
@@ -76,7 +76,7 @@ export default function pharmacistInventoryPage() {
             <TableBody>
               {filtered.map((item) => (
                 <TableRow key={item.id}>
-                  <TableCell className="pl-6 py-4 font-medium">{item.equipmentName}</TableCell>
+                  <TableCell className="pl-6 py-4 font-medium">{item.medicineName}</TableCell>
                   <TableCell className="text-xs uppercase text-muted-foreground">{item.category}</TableCell>
                   <TableCell className="text-center font-bold">
                     <Badge variant={item.quantity > 0 ? 'secondary' : 'outline'}>
@@ -88,7 +88,7 @@ export default function pharmacistInventoryPage() {
                       variant="outline" 
                       size="sm" 
                       className="rounded-lg h-8 border-primary/20 text-primary hover:bg-primary/5"
-                      onClick={() => handleRequest(item.equipmentName)}
+                      onClick={() => handleRequest(item.medicineName)}
                       disabled={item.quantity === 0}
                     >
                       <ClipboardList className="w-3.5 h-3.5 mr-1" />

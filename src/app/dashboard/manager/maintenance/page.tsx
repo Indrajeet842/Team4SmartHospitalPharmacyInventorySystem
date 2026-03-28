@@ -18,8 +18,8 @@ export default function MaintenancePage() {
   const { toast } = useToast();
 
   const [formData, setFormData] = useState({
-    equipmentId: 'EQ-204',
-    equipmentName: 'Excavator 3000',
+    medicineId: 'EQ-204',
+    medicineName: 'Excavator 3000',
     category: 'Heavy Machinery',
     usageDescription: 'Used for heavy-duty digging 12 hours/day in a dusty environment.',
     manufacturerSpecifications: 'Service every 1000 hours or 6 months, whichever comes first.',
@@ -55,7 +55,7 @@ export default function MaintenancePage() {
       <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">AI Maintenance Tool</h1>
-          <p className="text-muted-foreground mt-1">Harness GenAI to predict and schedule equipment servicing.</p>
+          <p className="text-muted-foreground mt-1">Harness GenAI to predict and schedule medicine servicing.</p>
         </div>
         <Sparkles className="w-12 h-12 text-secondary animate-pulse opacity-50 hidden md:block" />
       </div>
@@ -65,7 +65,7 @@ export default function MaintenancePage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <Wrench className="w-5 h-5 text-primary" />
-              Equipment Parameters
+              Medicine Parameters
             </CardTitle>
             <CardDescription>Input data for AI predictive analysis</CardDescription>
           </CardHeader>
@@ -73,12 +73,12 @@ export default function MaintenancePage() {
             <form onSubmit={handleGenerate} className="space-y-4">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="space-y-2">
-                  <Label>Equipment ID</Label>
-                  <Input value={formData.equipmentId} onChange={e => setFormData({...formData, equipmentId: e.target.value})} />
+                  <Label>Medicine ID</Label>
+                  <Input value={formData.medicineId} onChange={e => setFormData({...formData, medicineId: e.target.value})} />
                 </div>
                 <div className="space-y-2">
                   <Label>Name</Label>
-                  <Input value={formData.equipmentName} onChange={e => setFormData({...formData, equipmentName: e.target.value})} />
+                  <Input value={formData.medicineName} onChange={e => setFormData({...formData, medicineName: e.target.value})} />
                 </div>
               </div>
               <div className="space-y-2">
@@ -157,7 +157,7 @@ export default function MaintenancePage() {
             <div className="h-full flex flex-col items-center justify-center p-12 text-center border-2 border-dashed border-muted rounded-2xl opacity-40">
               <Sparkles className="w-12 h-12 mb-4" />
               <p className="font-medium">No analysis data yet.</p>
-              <p className="text-xs max-w-[240px] mt-1">Fill out the equipment parameters and click &apos;Run Analysis&apos; to generate a schedule.</p>
+              <p className="text-xs max-w-[240px] mt-1">Fill out the medicine parameters and click &apos;Run Analysis&apos; to generate a schedule.</p>
             </div>
           )}
         </div>

@@ -46,7 +46,7 @@ export default function StockPage() {
             <thead className="bg-blue-600 text-white">
 
               <tr>
-                <th className="p-3 text-left">Equipment</th>
+                <th className="p-3 text-left">Medicine</th>
                 <th className="text-left">Available</th>
                 <th className="text-left">Assigned</th>
                 <th className="text-left">Low Stock</th>
@@ -60,7 +60,7 @@ export default function StockPage() {
 
                 <tr>
                   <td colSpan={4} className="text-center p-6 text-gray-500">
-                    No equipment found. Add products first.
+                    No medicine found. Add products first.
                   </td>
                 </tr>
 

@@ -48,7 +48,7 @@ export default function CategoryPage() {
       <div className="space-y-6">
 
         <h1 className="text-3xl font-bold">
-          Defence Equipment Categories
+          Pharmacy Medicine Categories
         </h1>
 
         {/* CATEGORY FILTER */}
@@ -58,7 +58,7 @@ export default function CategoryPage() {
           <input
             value={filter}
             onChange={e => setFilter(e.target.value)}
-            placeholder="Filter equipment by category..."
+            placeholder="Filter medicine by category..."
             className="border p-2 rounded w-1/3"
           />
 

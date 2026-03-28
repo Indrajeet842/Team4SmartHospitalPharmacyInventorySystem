@@ -31,7 +31,7 @@ fetchProducts();
 },[]);
 
 
-/* SUBMIT EQUIPMENT REQUEST */
+/* SUBMIT MEDICINE REQUEST */
 
 const submitRequest = async()=>{
 
@@ -65,7 +65,7 @@ createdAt:new Date()
 
 });
 
-alert("Equipment request submitted for approval");
+alert("Medicine request submitted for approval");
 
 /* reset form */
 
@@ -82,7 +82,7 @@ return(
 <div className="space-y-6">
 
 <h1 className="text-2xl font-bold">
-Request Equipment
+Request Medicine
 </h1>
 
 {/* REQUEST FORM */}
@@ -103,7 +103,7 @@ onChange={(e)=>setProductId(e.target.value)}
 className="border rounded p-2 w-full"
 >
 
-<option value="">Select Equipment</option>
+<option value="">Select Medicine</option>
 
 {products.map(p=>(
 
@@ -154,7 +154,7 @@ Reason
 value={reason}
 onChange={(e)=>setReason(e.target.value)}
 className="border rounded p-2 w-full"
-placeholder="Explain why the equipment is required"
+placeholder="Explain why the medicine is required"
 />
 
 </div>

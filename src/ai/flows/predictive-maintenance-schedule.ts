@@ -1,6 +1,6 @@
 'use server';
 /**
- * @fileOverview A Genkit flow for generating a predictive maintenance schedule for equipment.
+ * @fileOverview A Genkit flow for generating a predictive maintenance schedule for medicine.
  *
  * - predictiveMaintenanceSchedule - A function that handles the predictive maintenance schedule generation.
  * - PredictiveMaintenanceScheduleInput - The input type for the predictiveMaintenanceSchedule function.
@@ -11,13 +11,13 @@ import {ai} from '@/ai/genkit';
 import {z} from 'genkit';
 
 const PredictiveMaintenanceScheduleInputSchema = z.object({
-  equipmentId: z.string().describe('The unique identifier for the equipment.'),
-  equipmentName: z.string().describe('The name of the equipment (e.g., "Excavator 3000").'),
-  category: z.string().describe('The category of the equipment (e.g., "Heavy Machinery", "Generator").'),
+  medicineId: z.string().describe('The unique identifier for the medicine.'),
+  medicineName: z.string().describe('The name of the medicine (e.g., "Dolo 650").'),
+  category: z.string().describe('The category of the medicine (e.g., "Tablet").'),
   usageDescription: z
     .string()
     .describe(
-      'A detailed description of how the equipment is currently being used, including hours, intensity, and environment (e.g., "Used for heavy-duty digging 12 hours/day in a dusty environment").'
+      'A detailed description of how the medicine is currently being used, including hours, intensity, and environment (e.g., "Used for heavy-duty digging 12 hours/day in a dusty environment").'
     ),
   historicalFailureData: z
     .array(z.string())
@@ -40,7 +40,7 @@ const PredictiveMaintenanceScheduleOutputSchema = z.object({
       notes: z.string().describe('Any additional notes or recommendations for the task.').optional(),
     })
   ),
-  overallRecommendations: z.string().describe('Overall recommendations for equipment longevity and performance.'),
+  overallRecommendations: z.string().describe('Overall recommendations for medicine longevity and performance.'),
 });
 export type PredictiveMaintenanceScheduleOutput = z.infer<typeof PredictiveMaintenanceScheduleOutputSchema>;
 
@@ -54,12 +54,12 @@ const predictiveMaintenanceSchedulePrompt = ai.definePrompt({
   name: 'predictiveMaintenanceSchedulePrompt',
   input: {schema: PredictiveMaintenanceScheduleInputSchema},
   output: {schema: PredictiveMaintenanceScheduleOutputSchema},
-  prompt: `You are an expert in industrial equipment maintenance and predictive analysis.
-Your task is to generate a detailed predictive maintenance schedule for a given piece of equipment.
+  prompt: `You are an expert in industrial medicine maintenance and predictive analysis.
+Your task is to generate a detailed predictive maintenance schedule for a given piece of medicine.
 
 Consider the following information:
-Equipment ID: {{{equipmentId}}}
-Equipment Name: {{{equipmentName}}}
+medicine ID: {{{medicineId}}}
+medicine Name: {{{medicineName}}}
 Category: {{{category}}}
 
 Usage Description: {{{usageDescription}}}
@@ -75,8 +75,8 @@ No historical failure data provided.
 
 Manufacturer Specifications: {{{manufacturerSpecifications}}}
 
-Based on this data, provide a comprehensive maintenance schedule aimed at minimizing downtime and extending equipment lifespan. Each task should have a clear description, a recommended frequency, a suggested next due date, and any relevant notes.
-Also, provide overall recommendations for the equipment.
+Based on this data, provide a comprehensive maintenance schedule aimed at minimizing downtime and extending medicine lifespan. Each task should have a clear description, a recommended frequency, a suggested next due date, and any relevant notes.
+Also, provide overall recommendations for the medicine.
 
 Ensure your output is a JSON object matching the following structure:
 `,

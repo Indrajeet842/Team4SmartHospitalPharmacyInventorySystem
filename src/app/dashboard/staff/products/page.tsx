@@ -25,7 +25,7 @@ export default function pharmacistProductsPage() {
     { id: 10, name: "Combat Boots", category: "Gear", qty: 30 },
   ]);
 
-  /* 🔹 Request Equipment */
+  /* 🔹 Request medicine */
   const requestItem = async (product: any) => {
 
     try {
@@ -71,7 +71,7 @@ export default function pharmacistProductsPage() {
     <div className="space-y-6 bg-[#f8fafc] min-h-screen p-4">
 
       <h1 className="text-3xl font-extrabold mb-4 text-gray-800 drop-shadow-sm">
-        Equipment Catalog
+        Medicine Catalog
       </h1>
 
       <Card className="shadow-2xl rounded-2xl border-none">
@@ -79,7 +79,7 @@ export default function pharmacistProductsPage() {
         <CardHeader className="pb-2">
 
           <CardTitle className="text-2xl font-bold text-gray-900">
-            Available Equipment
+            Available Medicine
           </CardTitle>
 
         </CardHeader>

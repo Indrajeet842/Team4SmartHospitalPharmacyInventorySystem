@@ -11,7 +11,7 @@ doc
 
 import { db } from "@/lib/firebase";
 
-export default function AssignedEquipmentPage(){
+export default function AssignedMedicinePage(){
 
 const [items,setItems] = useState<any[]>([]);
 
@@ -34,12 +34,12 @@ fetchAssignments();
 
 
 /* ============================= */
-/* RETURN EQUIPMENT              */
+/* RETURN medicine              */
 /* ============================= */
 
 const returnItem = async(assignId:string,item:any)=>{
 
-const confirmReturn = confirm("Return this equipment?");
+const confirmReturn = confirm("Return this medicine?");
 if(!confirmReturn) return;
 
 await addDoc(collection(db,"returns"),{
@@ -53,7 +53,7 @@ condition:item.condition || "Good"
 
 });
 
-alert("Equipment returned successfully");
+alert("Medicine returned successfully");
 
 };
 
@@ -96,7 +96,7 @@ const issuedDate = item.issuedDate?.seconds
 : "Unknown";
 
 alert(
-`Equipment History — ${item.productName}
+`Medicine History — ${item.productName}
 
 ${issuedDate}
 Issued to you
@@ -115,7 +115,7 @@ return(
 <div className="space-y-6">
 
 <h1 className="text-2xl font-bold">
-Assigned Equipment
+Assigned Medicine
 </h1>
 
 {items.map(assign=>(

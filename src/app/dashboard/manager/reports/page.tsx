@@ -171,7 +171,7 @@ export default function ReportsPage() {
           <div className="bg-white p-5 rounded-lg shadow">
 
             <h2 className="text-gray-500">
-              Total Equipment
+              Total Medicine
             </h2>
 
             <p className="text-2xl font-bold">
@@ -212,7 +212,7 @@ export default function ReportsPage() {
         <div className="bg-white p-6 rounded-lg shadow">
 
           <h2 className="text-lg font-semibold mb-4">
-            Equipment Inventory Levels
+            Medicine Inventory Levels
           </h2>
 
           <ResponsiveContainer width="100%" height={300}>

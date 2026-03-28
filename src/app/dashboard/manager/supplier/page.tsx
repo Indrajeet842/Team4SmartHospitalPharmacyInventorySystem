@@ -24,7 +24,7 @@ export default function SupplierPage() {
       <div className="space-y-6">
 
         <h1 className="text-3xl font-bold">
-          Defence Supplier Management
+          Pharmacy Supplier Management
         </h1>
 
         {/* Supplier Table */}

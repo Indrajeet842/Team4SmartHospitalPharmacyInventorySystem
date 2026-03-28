@@ -42,7 +42,7 @@ export default function pharmacistTransactionsPage() {
     const result: Activity[] = [];
 
     /* ----------------------------- */
-    /* ASSIGNED EQUIPMENT → ISSUED  */
+    /* ASSIGNED medicine → ISSUED  */
     /* ----------------------------- */
 
     const assignSnap = await getDocs(collection(db,"assignments"));
@@ -138,7 +138,7 @@ export default function pharmacistTransactionsPage() {
 
       {/* Page Title */}
       <h1 className="text-3xl font-bold text-gray-800 mb-6">
-        My Equipment Activity
+        My Medicine Activity
       </h1>
 
       {/* Card Container */}
